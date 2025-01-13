@@ -32,7 +32,7 @@
     /**
      * This takes an array of words, and randomly selectes a specified amount of them from the list
      *
-     * @param string $wordList the array of words to search
+     * @param array|Countable $wordList the array of words to search
      * @param int $amount the amount of words to search for
      * 
      * @author Matthieu Laroche
@@ -61,10 +61,231 @@
                     }
                 }
                 if ($validated === true){
-                    $randomWords[] = $newWord;
+                    $randomWords[] = strtoupper($newWord);
                 }
             }
         }
         return $randomWords;
+    }
+    /**
+     * This takes an array of words, and creates a word search board containing them
+     *
+     * @param array|Countable $wordList the array of words to use
+     * @param int $size the size of the board
+     * 
+     * @author Matthieu Laroche
+     * @return array|null Returns an array representing the word search board,
+     * or null if there was an error with the provided parameters
+     */  
+    function generateBoard($wordList, $size){
+        //TODO: Finish other orientations of diagonal orientations
+        if ($wordList === null || $size === null){
+            echo "ERROR: Parameters not set properly";
+            return null;
+        }
+        foreach($wordList as $word){
+            if ($size < strlen($word)){
+                echo "ERROR: size must be greater than provided words";
+                return null;
+            }
+        }
+
+        //generate a blank board
+        $board = [];
+        for ($i = 0; $i < $size; $i++){
+            $line = [];
+            for ($j = 0; $j < $size; $j++){
+                $line[] = " ";
+            }
+            $board[] = $line;
+        }
+
+        foreach($wordList as $word){
+            $orientation = rand(0,4);
+            if ($orientation === 0){
+                //this is for vertical words
+                $validated = false;
+                while (!$validated){
+                    //generate a random starting coord for the word
+                    $randX = rand(0,$size - 1);
+                    $randY = rand(0, $size - 1);
+                    //make sure it will not go out of bounds of the board, if so, reroll
+                    if ($randY + (strlen($word) - 1) > $size - 1){
+                        continue;
+                    }
+                    $temp = $randY;
+                    $validated = true;
+                    //check and make sure either all the slots are empty or the correct letter
+                    for ($i = 0; $i < strlen($word); $i++){
+                        if ($board[$temp][$randX] !== " " && $board[$temp][$randX] !== $word[$i]){
+                            $validated = false;
+                            break;
+                        }
+                        $temp++;
+                    }
+                    if ($validated === false){
+                        //if it does not work, reroll a new spot and try again
+                        continue;
+                    }
+                    else{
+                        //place the word into the array
+                        for ($i = 0; $i < strlen($word); $i++){
+                            $board[$randY][$randX] = $word[$i];
+                            $randY++;
+                        }
+                    }
+                }
+            }
+            else if ($orientation === 1){
+                //this is for horizontal words
+                $validated = false;
+                while (!$validated){
+                    //generate a random starting coord for the word
+                    $randX = rand(0,$size - 1);
+                    $randY = rand(0, $size - 1);
+                    //make sure it will not go out of bounds of the board, if so, reroll
+                    if ($randX + (strlen($word) - 1) > $size - 1){
+                        continue;
+                    }
+                    $temp = $randX;
+                    $validated = true;
+                    //check and make sure either all the slots are empty or the correct letter
+                    for ($i = 0; $i < strlen($word); $i++){
+                        if ($board[$randY][$temp] !== " " && $board[$randY][$temp] !== $word[$i]){
+                            $validated = false;
+                            break;
+                        }
+                        $temp++;
+                    }
+                    if ($validated === false){
+                        //if it does not work, reroll a new spot and try again
+                        continue;
+                    }
+                    else{
+                        //place the word into the array
+                        for ($i = 0; $i < strlen($word); $i++){
+                            $board[$randY][$randX] = $word[$i];
+                            $randX++;
+                        }
+                    }
+                }
+            }
+            else if ($orientation === 2){
+                //this is for reverse vertical words (down to up)
+                $validated = false;
+                while (!$validated){
+                    //generate a random starting coord for the word
+                    $randX = rand(0,$size - 1);
+                    $randY = rand(0, $size - 1);
+                    //make sure it will not go out of bounds of the board, if so, reroll
+                    if ($randY - (strlen($word) - 1) < 0){
+                        continue;
+                    }
+                    $temp = $randY;
+                    $validated = true;
+                    //check and make sure either all the slots are empty or the correct letter
+                    for ($i = 0; $i < strlen($word); $i++){
+                        if ($board[$temp][$randX] !== " " && $board[$temp][$randX] !== $word[$i]){
+                            $validated = false;
+                            break;
+                        }
+                        $temp--;
+                    }
+                    if ($validated === false){
+                        //if it does not work, reroll a new spot and try again
+                        continue;
+                    }
+                    else{
+                        //place the word into the array
+                        for ($i = 0; $i < strlen($word); $i++){
+                            $board[$randY][$randX] = $word[$i];
+                            $randY--;
+                        }
+                    }
+                }
+            }
+            else if ($orientation === 3){
+                //this is for reverse horizontal words (right to left)
+                $validated = false;
+                while (!$validated){
+                    //generate a random starting coord for the word
+                    $randX = rand(0,$size - 1);
+                    $randY = rand(0, $size - 1);
+                    //make sure it will not go out of bounds of the board, if so, reroll
+                    if ($randX - (strlen($word) - 1) < 0){
+                        continue;
+                    }
+                    $temp = $randX;
+                    $validated = true;
+                    //check and make sure either all the slots are empty or the correct letter
+                    for ($i = 0; $i < strlen($word); $i++){
+                        if ($board[$randY][$temp] !== " " && $board[$randY][$temp] !== $word[$i]){
+                            $validated = false;
+                            break;
+                        }
+                        $temp--;
+                    }
+                    if ($validated === false){
+                        //if it does not work, reroll a new spot and try again
+                        continue;
+                    }
+                    else{
+                        //place the word into the array
+                        for ($i = 0; $i < strlen($word); $i++){
+                            $board[$randY][$randX] = $word[$i];
+                            $randX--;
+                        }
+                    }
+                }
+            }
+            else if ($orientation === 4){
+                //this is for regular diagonal (top left to bottom right)
+                $validated = false;
+                while (!$validated){
+                    //generate a random starting coord for the word
+                    $randX = rand(0,$size - 1);
+                    $randY = rand(0, $size - 1);
+                    //make sure it will not go out of bounds of the board, if so, reroll
+                    if ($randY + (strlen($word) - 1) > $size - 1){
+                        continue;
+                    }
+                    $tempX = $randX;
+                    $tempY = $randY;
+                    $validated = true;
+                    //check and make sure either all the slots are empty or the correct letter
+                    for ($i = 0; $i < strlen($word); $i++){
+                        if ($board[$tempY][$tempX] !== " " && $board[$tempY][$tempX] !== $word[$i]){
+                            $validated = false;
+                            break;
+                        }
+                        $tempX++;
+                        $tempY++;
+
+                    }
+                    if ($validated === false){
+                        //if it does not work, reroll a new spot and try again
+                        continue;
+                    }
+                    else{
+                        //place the word into the array
+                        for ($i = 0; $i < strlen($word); $i++){
+                            $board[$randY][$randX] = $word[$i];
+                            $randY++;
+                            $randX++;
+                        }
+                    }
+                }
+            }
+        }
+        return $board;
+    }
+    $wordList = loadWords("words.txt");
+    $words = getRandomWordList($wordList, 10);
+    $board = generateBoard($words, 20);
+    foreach($board as $row){
+        echo json_encode($row) . "<br>";
+    }
+    for($i = 0; $i < count($words); $i++){
+        echo $i + 1 . " $words[$i]<br>";
     }
 ?>
