@@ -246,7 +246,7 @@
                     $randX = rand(0,$size - 1);
                     $randY = rand(0, $size - 1);
                     //make sure it will not go out of bounds of the board, if so, reroll
-                    if ($randY + (strlen($word) - 1) > $size - 1){
+                    if ($randY + (strlen($word) - 1) > $size - 1 || $randX + (strlen($word) - 1) > $size - 1 ){
                         continue;
                     }
                     $tempX = $randX;
@@ -277,15 +277,19 @@
                 }
             }
         }
+        $letters = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
+        for($i = 0; $i < $size; $i++){
+            for($j = 0; $j < $size; $j++){
+                if ($board[$i][$j] === " "){
+                    $randLetter = $letters[rand(0, count($letters) - 1)];
+                    $board[$i][$j] = $randLetter;
+                }  
+            }
+        }
         return $board;
     }
     $wordList = loadWords("words.txt");
     $words = getRandomWordList($wordList, 10);
     $board = generateBoard($words, 20);
-    foreach($board as $row){
-        echo json_encode($row) . "<br>";
-    }
-    for($i = 0; $i < count($words); $i++){
-        echo $i + 1 . " $words[$i]<br>";
-    }
+    echo json_encode($board);
 ?>

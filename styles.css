@@ -1,0 +1,17 @@
+.letter{
+    border: solid black 1px;
+    font-size: 16px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    width: 30px;
+    height: 30px;
+    user-select: none;
+    border-collapse: collapse;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 30px;
+}
+#gameGrid{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+}
