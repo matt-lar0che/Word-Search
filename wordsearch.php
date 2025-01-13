@@ -23,7 +23,8 @@
             while (!feof($fh)){
                 $line = fgets($fh);
                 $line = substr($line,0, strlen($line) - 2);
-                $wordArray[] = $line;
+                $newWord = filter_var($line, FILTER_SANITIZE_SPECIAL_CHARS);
+                $wordArray[] = $newWord;
             }
             fclose($fh);
             return $wordArray;
@@ -52,7 +53,7 @@
         for ($i = 0; $i < $amount; $i++){
             $validated = false;
             while (!$validated){
-                $newWord = $wordList[rand(0, count($wordList) - 1)];
+                $newWord = strtoupper($wordList[rand(0, count($wordList) - 1)]);
                 $validated = true;
                 foreach($randomWords as $word){
                     if ($newWord === $word){
@@ -277,6 +278,7 @@
                 }
             }
         }
+        /*
         $letters = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
         for($i = 0; $i < $size; $i++){
             for($j = 0; $j < $size; $j++){
@@ -286,6 +288,7 @@
                 }  
             }
         }
+            */
         return $board;
     }
     $wordList = loadWords("words.txt");
