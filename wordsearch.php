@@ -13,7 +13,6 @@
      * @author Matthieu Laroche
      * @return array|null Returns an array of words on success, or null if there was an error opening the file
      */    
-    $TPL = [];
     function loadWords($filename){
             $wordArray = [];
             $fh = fopen($filename, "r");
@@ -471,13 +470,17 @@
         */
         return $board;
     }
-    $wordList = loadWords("words.txt");
-    $words = getRandomWordList($wordList, 10);
-    $board = generateBoard($words, 20);
-    echo json_encode($board);
-    /*
-    foreach($TPL["words"] as $wordCoords){
-        echo json_encode($wordCoords);
+    function validateCoords($coords){
+        $pairs = [];
+        foreach($coords as $coord){
+            $pair = explode(",",$coord);
+            $x = filter_var($pair[0],FILTER_VALIDATE_INT);
+            $y = filter_var($pair[0],FILTER_VALIDATE_INT);
+            if ($x === false|| $y === false){
+                return false;
+            }
+            $pairs[] = array($x,$y);
+        }
+        return $pairs;
     }
-    */
 ?>

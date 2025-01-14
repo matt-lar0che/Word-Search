@@ -1,7 +1,7 @@
 var isPressed = false;
 var nodeArray;
 async function getData() {
-    const url = "wordsearch.php";
+    const url = "controller.php";
     try {
       const response = await fetch(url);
       if (!response.ok) {
@@ -59,16 +59,33 @@ document.addEventListener("mousedown", () => {
 document.addEventListener("mouseup", () =>{
   isPressed = false;
 });
-document.getElementById("checkWord").addEventListener("click", () => {
+document.getElementById("checkWord").addEventListener("click", async () => {
   let nodes = document.querySelectorAll(".letter-clicked");
   if (nodes === null){
     console.log("null");
     return;
   }
-  let coords = [];
+  let coordinates = [];
   for (i = 0; i < nodes.length; i++){
-    coords.push(nodes[i].getAttribute("id"));
+    coordinates.push(nodes[i].getAttribute("id"));
   }
-  console.log(coords);
+  let jsonCoords = JSON.stringify(coordinates);
+  try {
+    let data = "coords=" + jsonCoords;
+    const response = await fetch("controller.php",{
+      method: 'POST',
+      headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+      body: data
+    });
+    if (!response.ok) {
+      throw new Error(`Response status: ${response.status}`);
+    }
+
+    const json = await response.json();
+    document.getElementById("response").innerHTML = JSON.stringify(json);
+  } catch (error) {
+    console.error(error.message);
+  }
 });
-  
