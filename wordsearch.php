@@ -13,6 +13,7 @@
      * @author Matthieu Laroche
      * @return array|null Returns an array of words on success, or null if there was an error opening the file
      */    
+    $TPL = [];
     function loadWords($filename){
             $wordArray = [];
             $fh = fopen($filename, "r");
@@ -79,7 +80,7 @@
      * or null if there was an error with the provided parameters
      */  
     function generateBoard($wordList, $size){
-        //TODO: Finish other orientations of diagonal orientations
+        global $TPL;
         if ($wordList === null || $size === null){
             echo "ERROR: Parameters not set properly";
             return null;
@@ -130,10 +131,13 @@
                     }
                     else{
                         //place the word into the array
+                        $wordCoords = [];
                         for ($i = 0; $i < strlen($word); $i++){
                             $board[$randY][$randX] = $word[$i];
+                            $wordCoords[] = "$randX,$randY";
                             $randY++;
                         }
+                        $TPL["words"][$word] = $wordCoords;
                     }
                 }
             }
@@ -164,10 +168,13 @@
                     }
                     else{
                         //place the word into the array
+                        $wordCoords = [];
                         for ($i = 0; $i < strlen($word); $i++){
                             $board[$randY][$randX] = $word[$i];
+                            $wordCoords[] = "$randX,$randY";
                             $randX++;
                         }
+                        $TPL["words"][$word] = $wordCoords;
                     }
                 }
             }
@@ -198,10 +205,13 @@
                     }
                     else{
                         //place the word into the array
+                        $wordCoords = [];
                         for ($i = 0; $i < strlen($word); $i++){
                             $board[$randY][$randX] = $word[$i];
+                            $wordCoords[] = "$randX,$randY";
                             $randY--;
                         }
+                        $TPL["words"][$word] = $wordCoords;
                     }
                 }
             }
@@ -232,10 +242,13 @@
                     }
                     else{
                         //place the word into the array
+                        $wordCoords = [];
                         for ($i = 0; $i < strlen($word); $i++){
                             $board[$randY][$randX] = $word[$i];
+                            $wordCoords[] = "$randX,$randY";
                             $randX--;
                         }
+                        $TPL["words"][$word] = $wordCoords;
                     }
                 }
             }
@@ -269,11 +282,14 @@
                     }
                     else{
                         //place the word into the array
+                        $wordCoords = [];
                         for ($i = 0; $i < strlen($word); $i++){
                             $board[$randY][$randX] = $word[$i];
+                            $wordCoords[] = "$randX,$randY";
                             $randY++;
                             $randX++;
                         }
+                        $TPL["words"][$word] = $wordCoords;
                     }
                 }
             }
@@ -307,11 +323,14 @@
                     }
                     else{
                         //place the word into the array
+                        $wordCoords = [];
                         for ($i = 0; $i < strlen($word); $i++){
                             $board[$randY][$randX] = $word[$i];
+                            $wordCoords[] = "$randX,$randY";
                             $randY++;
                             $randX--;
                         }
+                        $TPL["words"][$word] = $wordCoords;
                     }
                 }
             }
@@ -345,11 +364,14 @@
                     }
                     else{
                         //place the word into the array
+                        $wordCoords = [];
                         for ($i = 0; $i < strlen($word); $i++){
                             $board[$randY][$randX] = $word[$i];
+                            $wordCoords[] = "$randX,$randY";
                             $randY--;
                             $randX--;
                         }
+                        $TPL["words"][$word] = $wordCoords;
                     }
                 }
             }
@@ -383,11 +405,14 @@
                     }
                     else{
                         //place the word into the array
+                        $wordCoords = [];
                         for ($i = 0; $i < strlen($word); $i++){
                             $board[$randY][$randX] = $word[$i];
+                            $wordCoords[] = "$randX,$randY";
                             $randY++;
                             $randX--;
                         }
+                        $TPL["words"][$word] = $wordCoords;
                     }
                 }
             }
@@ -421,11 +446,14 @@
                     }
                     else{
                         //place the word into the array
+                        $wordCoords = [];
                         for ($i = 0; $i < strlen($word); $i++){
                             $board[$randY][$randX] = $word[$i];
+                            $wordCoords[] = "$randX,$randY";
                             $randY--;
                             $randX++;
                         }
+                        $TPL["words"][$word] = $wordCoords;
                     }
                 }
             }
@@ -440,11 +468,16 @@
                 }  
             }
         }
-            */
+        */
         return $board;
     }
     $wordList = loadWords("words.txt");
     $words = getRandomWordList($wordList, 10);
     $board = generateBoard($words, 20);
     echo json_encode($board);
+    /*
+    foreach($TPL["words"] as $wordCoords){
+        echo json_encode($wordCoords);
+    }
+    */
 ?>

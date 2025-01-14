@@ -10,7 +10,6 @@ async function getData() {
   
       const json = await response.json();
       createBoard(json);
-      console.log(json);
     } catch (error) {
       console.error(error.message);
     }
@@ -26,6 +25,7 @@ function createBoard(board){
         for (let j = 0; j < board.length; j++){
             let node = document.createElement("div");
             node.setAttribute("class","letter");
+            node.setAttribute("id", j+ "," + i);
             node.innerHTML = board[i][j];
             node.addEventListener("mouseover", () => {
               if (isPressed){
@@ -53,6 +53,15 @@ document.addEventListener("mouseup", () =>{
   isPressed = false;
 });
 document.getElementById("checkWord").addEventListener("click", () => {
-  console.log(nodeArray);
+  let nodes = document.querySelectorAll(".letter-clicked");
+  if (nodes === null){
+    console.log("null");
+    return;
+  }
+  let coords = [];
+  for (i = 0; i < nodes.length; i++){
+    coords.push(nodes[i].getAttribute("id"));
+  }
+  console.log(coords);
 });
   
