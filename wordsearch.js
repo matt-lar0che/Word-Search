@@ -27,22 +27,29 @@ function createBoard(board){
             node.setAttribute("class","letter");
             node.setAttribute("id", j+ "," + i);
             node.innerHTML = board[i][j];
-            node.addEventListener("mouseover", () => {
+            node.addEventListener("mouseover", (event) => {
               if (isPressed){
-                node.setAttribute("class","letter-clicked");
+                if (event.target.getAttribute("class") === "letter"){
+                  node.setAttribute("class","letter-clicked");
+                }
+                else if (event.target.getAttribute("class") === "letter-clicked"){
+                  node.setAttribute("class","letter");
+                }
               }
             });
-            node.addEventListener("mousedown", () => {
-              node.setAttribute("class","letter-clicked");
+            node.addEventListener("mousedown", (event) => {
+              if (event.target.getAttribute("class") === "letter"){
+                node.setAttribute("class","letter-clicked");
+              }
+              else if (event.target.getAttribute("class") === "letter-clicked"){
+                node.setAttribute("class","letter");
+              }
             });
             mainDiv.appendChild(node);
             row.push(node);
         }
       nodeArray.push(row);
     }
-}
-function checkValidGuess(){
-  let nodes = document.querySelectorAll(".letter-clicked");
 }
 
 window.addEventListener("load", getData);
