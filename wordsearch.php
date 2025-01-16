@@ -68,7 +68,7 @@
         }
         $_SESSION["wordList"] = [];
         foreach ($randomWords as $word){
-            $_SESSION["wordList"][] = array("word" => $word, "found" => false, "coords" => "");
+            $_SESSION["wordList"][] = array("word" => $word, "found" => false, "coords" => []);
         }
         return $randomWords;
     }
@@ -142,9 +142,9 @@
                             $randY++;
                         }
                         $_SESSION["words"][$word] = $wordCoords;
-                        foreach ($_SESSION["wordList"] as $wordFromList){
-                            if ($wordFromList["word"] == $word){
-                                $wordFromList["coords"] = $wordCoords;
+                        for ($i = 0; $i < count($_SESSION["wordList"]); $i++){
+                            if ($_SESSION["wordList"]["$i"]["word"] === $word){
+                                $_SESSION["wordList"]["$i"]["coords"] = $wordCoords;
                             }
                         }
                     }
@@ -184,9 +184,9 @@
                             $randX++;
                         }
                         $_SESSION["words"][$word] = $wordCoords;
-                        foreach ($_SESSION["wordList"] as $wordFromList){
-                            if ($wordFromList["word"] == $word){
-                                $wordFromList["coords"] = $wordCoords;
+                        for ($i = 0; $i < count($_SESSION["wordList"]); $i++){
+                            if ($_SESSION["wordList"]["$i"]["word"] === $word){
+                                $_SESSION["wordList"]["$i"]["coords"] = $wordCoords;
                             }
                         }
                     }
@@ -226,9 +226,9 @@
                             $randY--;
                         }
                         $_SESSION["words"][$word] = $wordCoords;
-                        foreach ($_SESSION["wordList"] as $wordFromList){
-                            if ($wordFromList["word"] == $word){
-                                $wordFromList["coords"] = $wordCoords;
+                        for ($i = 0; $i < count($_SESSION["wordList"]); $i++){
+                            if ($_SESSION["wordList"]["$i"]["word"] === $word){
+                                $_SESSION["wordList"]["$i"]["coords"] = $wordCoords;
                             }
                         }
                     }
@@ -268,9 +268,9 @@
                             $randX--;
                         }
                         $_SESSION["words"][$word] = $wordCoords;
-                        foreach ($_SESSION["wordList"] as $wordFromList){
-                            if ($wordFromList["word"] == $word){
-                                $wordFromList["coords"] = $wordCoords;
+                        for ($i = 0; $i < count($_SESSION["wordList"]); $i++){
+                            if ($_SESSION["wordList"]["$i"]["word"] === $word){
+                                $_SESSION["wordList"]["$i"]["coords"] = $wordCoords;
                             }
                         }
                     }
@@ -314,9 +314,9 @@
                             $randX++;
                         }
                         $_SESSION["words"][$word] = $wordCoords;
-                        foreach ($_SESSION["wordList"] as $wordFromList){
-                            if ($wordFromList["word"] == $word){
-                                $wordFromList["coords"] = $wordCoords;
+                        for ($i = 0; $i < count($_SESSION["wordList"]); $i++){
+                            if ($_SESSION["wordList"]["$i"]["word"] === $word){
+                                $_SESSION["wordList"]["$i"]["coords"] = $wordCoords;
                             }
                         }
                     }
@@ -360,9 +360,9 @@
                             $randX--;
                         }
                         $_SESSION["words"][$word] = $wordCoords;
-                        foreach ($_SESSION["wordList"] as $wordFromList){
-                            if ($wordFromList["word"] == $word){
-                                $wordFromList["coords"] = $wordCoords;
+                        for ($i = 0; $i < count($_SESSION["wordList"]); $i++){
+                            if ($_SESSION["wordList"]["$i"]["word"] === $word){
+                                $_SESSION["wordList"]["$i"]["coords"] = $wordCoords;
                             }
                         }
                     }
@@ -406,9 +406,9 @@
                             $randX--;
                         }
                         $_SESSION["words"][$word] = $wordCoords;
-                        foreach ($_SESSION["wordList"] as $wordFromList){
-                            if ($wordFromList["word"] == $word){
-                                $wordFromList["coords"] = $wordCoords;
+                        for ($i = 0; $i < count($_SESSION["wordList"]); $i++){
+                            if ($_SESSION["wordList"]["$i"]["word"] === $word){
+                                $_SESSION["wordList"]["$i"]["coords"] = $wordCoords;
                             }
                         }
                     }
@@ -452,9 +452,9 @@
                             $randX--;
                         }
                         $_SESSION["words"][$word] = $wordCoords;
-                        foreach ($_SESSION["wordList"] as $wordFromList){
-                            if ($wordFromList["word"] == $word){
-                                $wordFromList["coords"] = $wordCoords;
+                        for ($i = 0; $i < count($_SESSION["wordList"]); $i++){
+                            if ($_SESSION["wordList"]["$i"]["word"] === $word){
+                                $_SESSION["wordList"]["$i"]["coords"] = $wordCoords;
                             }
                         }
                     }
@@ -498,9 +498,9 @@
                             $randX++;
                         }
                         $_SESSION["words"][$word] = $wordCoords;
-                        foreach ($_SESSION["wordList"] as $wordFromList){
-                            if ($wordFromList["word"] == $word){
-                                $wordFromList["coords"] = $wordCoords;
+                        for ($i = 0; $i < count($_SESSION["wordList"]); $i++){
+                            if ($_SESSION["wordList"]["$i"]["word"] === $word){
+                                $_SESSION["wordList"]["$i"]["coords"] = $wordCoords;
                             }
                         }
                     }
@@ -576,25 +576,23 @@
             }
             if ($coordFoundInGiven){
                 //if we loop through all points, and they end up existing, the word has been found
-                //TODO: Maybe modify session here and unset the word since it has been found? Or return
-                //words that have been found for another method to take delete them, and take care of 
-                //the coords.
                 foreach($word as $coordPair){
                     $returnArr[] = $coordPair;
                 }
-                foreach ($_SESSION["wordList"] as $wordFromList){
-                    if ($wordFromList["word"] === $word){
-                        $word["found"] = true;
-                        break;
+                //go through and mark that this word has been found so the front end can colour them.
+                $found;
+                foreach($_SESSION["words"] as $key => $value){
+                    if ($value === $word){
+                        $found = $key;
                     }
                 }
+                for ($i = 0; $i < count($_SESSION["wordList"]); $i++){
+                    if ($_SESSION["wordList"]["$i"]["word"] === $found){
+                        $_SESSION["wordList"]["$i"]["found"] = true;
+                        break;
+                    }
+                }   
             }
-        }
-        if (count($returnArr) === 0){
-            return null;
-        }
-        else{
-            return $returnArr;
         }
     }
 
