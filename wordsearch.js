@@ -1,7 +1,7 @@
 var isPressed = false;
 var nodeArray;
 async function getData() {
-    const url = "controller.php";
+    const url = "controller.php?action=board";
     try {
       const response = await fetch(url);
       if (!response.ok) {
@@ -13,6 +13,26 @@ async function getData() {
     } catch (error) {
       console.error(error.message);
     }
+
+    try {
+      const response = await fetch("controller.php?action=wordList");
+      if (!response.ok) {
+        throw new Error(`Response status: ${response.status}`);
+      }
+  
+      const json = await response.json();
+      json.forEach(element => {
+        let node = document.createElement("p");
+        node.innerHTML = element.word;
+        if (element.found === true){
+          node.style.textDecoration = "line-through";
+        }
+        document.getElementById("wordList").appendChild(node);
+      });
+    } catch (error) {
+      console.error(error.message);
+    }
+
 }
 
 function createBoard(board){
