@@ -21,6 +21,7 @@ async function getData() {
       }
   
       const json = await response.json();
+      console.log(json);
       json.forEach(element => {
         let node = document.createElement("p");
         node.innerHTML = element.word;

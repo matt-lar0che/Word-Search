@@ -68,7 +68,7 @@
         }
         $_SESSION["wordList"] = [];
         foreach ($randomWords as $word){
-            $_SESSION["wordList"][] = array("word" => $word, "found" => false);
+            $_SESSION["wordList"][] = array("word" => $word, "found" => false, "coords" => "");
         }
         return $randomWords;
     }
@@ -142,6 +142,11 @@
                             $randY++;
                         }
                         $_SESSION["words"][$word] = $wordCoords;
+                        foreach ($_SESSION["wordList"] as $wordFromList){
+                            if ($wordFromList["word"] == $word){
+                                $wordFromList["coords"] = $wordCoords;
+                            }
+                        }
                     }
                 }
             }
@@ -179,6 +184,11 @@
                             $randX++;
                         }
                         $_SESSION["words"][$word] = $wordCoords;
+                        foreach ($_SESSION["wordList"] as $wordFromList){
+                            if ($wordFromList["word"] == $word){
+                                $wordFromList["coords"] = $wordCoords;
+                            }
+                        }
                     }
                 }
             }
@@ -216,6 +226,11 @@
                             $randY--;
                         }
                         $_SESSION["words"][$word] = $wordCoords;
+                        foreach ($_SESSION["wordList"] as $wordFromList){
+                            if ($wordFromList["word"] == $word){
+                                $wordFromList["coords"] = $wordCoords;
+                            }
+                        }
                     }
                 }
             }
@@ -253,6 +268,11 @@
                             $randX--;
                         }
                         $_SESSION["words"][$word] = $wordCoords;
+                        foreach ($_SESSION["wordList"] as $wordFromList){
+                            if ($wordFromList["word"] == $word){
+                                $wordFromList["coords"] = $wordCoords;
+                            }
+                        }
                     }
                 }
             }
@@ -294,6 +314,11 @@
                             $randX++;
                         }
                         $_SESSION["words"][$word] = $wordCoords;
+                        foreach ($_SESSION["wordList"] as $wordFromList){
+                            if ($wordFromList["word"] == $word){
+                                $wordFromList["coords"] = $wordCoords;
+                            }
+                        }
                     }
                 }
             }
@@ -335,6 +360,11 @@
                             $randX--;
                         }
                         $_SESSION["words"][$word] = $wordCoords;
+                        foreach ($_SESSION["wordList"] as $wordFromList){
+                            if ($wordFromList["word"] == $word){
+                                $wordFromList["coords"] = $wordCoords;
+                            }
+                        }
                     }
                 }
             }
@@ -376,6 +406,11 @@
                             $randX--;
                         }
                         $_SESSION["words"][$word] = $wordCoords;
+                        foreach ($_SESSION["wordList"] as $wordFromList){
+                            if ($wordFromList["word"] == $word){
+                                $wordFromList["coords"] = $wordCoords;
+                            }
+                        }
                     }
                 }
             }
@@ -417,6 +452,11 @@
                             $randX--;
                         }
                         $_SESSION["words"][$word] = $wordCoords;
+                        foreach ($_SESSION["wordList"] as $wordFromList){
+                            if ($wordFromList["word"] == $word){
+                                $wordFromList["coords"] = $wordCoords;
+                            }
+                        }
                     }
                 }
             }
@@ -458,6 +498,11 @@
                             $randX++;
                         }
                         $_SESSION["words"][$word] = $wordCoords;
+                        foreach ($_SESSION["wordList"] as $wordFromList){
+                            if ($wordFromList["word"] == $word){
+                                $wordFromList["coords"] = $wordCoords;
+                            }
+                        }
                     }
                 }
             }
@@ -537,9 +582,20 @@
                 foreach($word as $coordPair){
                     $returnArr[] = $coordPair;
                 }
+                foreach ($_SESSION["wordList"] as $wordFromList){
+                    if ($wordFromList["word"] === $word){
+                        $word["found"] = true;
+                        break;
+                    }
+                }
             }
         }
-        return $returnArr;
+        if (count($returnArr) === 0){
+            return null;
+        }
+        else{
+            return $returnArr;
+        }
     }
 
     function fetchWordList(){
