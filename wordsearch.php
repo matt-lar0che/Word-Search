@@ -503,4 +503,7 @@
         }
         return $returnArr;
     }
+
+    function validateMatchingWordsCoords($givenCoords){
+    }
 ?>
