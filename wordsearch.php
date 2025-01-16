@@ -495,9 +495,8 @@
                 for($i = 0; $i < $len; $i++){
                     if ($coords === $givenCoords[$i]){
                         $returnArr[] = $givenCoords[$i];
-                        array_splice($givenCoords, $i, 1); //removes from array since we found this point, avoids collision with other words later.
+                        array_splice($givenCoords, $i, 0); //removes from array since we found this point, avoids collision with other words later.
                     }
-                    $len--;
                 }
             }
         }
@@ -506,6 +505,7 @@
 
     function validateMatchingWordsCoords($givenCoords){
         //givenCoords is an array of points of form "x,y".
+        //echo json_encode($givenCoords);
         $returnArr = [];
         foreach($_SESSION["words"] as $word){
             foreach($word as $coordPair){

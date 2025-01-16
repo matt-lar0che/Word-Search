@@ -34,7 +34,6 @@
             exit();
         }
         $matchingCoords = validateMatchingCoords($result);
-
         $matchingWordCoords = validateMatchingWordsCoords($matchingCoords);
         echo json_encode($matchingWordCoords);
 
