@@ -66,6 +66,10 @@
                 }
             }
         }
+        $_SESSION["wordList"] = [];
+        foreach ($randomWords as $word){
+            $_SESSION["wordList"][] = array("word" => $word, "found" => false);
+        }
         return $randomWords;
     }
     /**
@@ -495,10 +499,14 @@
                 for($i = 0; $i < $len; $i++){
                     if ($coords === $givenCoords[$i]){
                         $returnArr[] = $givenCoords[$i];
-                        array_splice($givenCoords, $i, 0); //removes from array since we found this point, avoids collision with other words later.
+                        array_splice($givenCoords, $i, 1); //removes from array since we found this point, avoids collision with other words later.
+                        $len--;
                     }
                 }
             }
+        }
+        if(count($givenCoords) >= 2){
+            return false;
         }
         return $returnArr;
     }
@@ -532,5 +540,9 @@
             }
         }
         return $returnArr;
+    }
+
+    function fetchWordList(){
+        return $_SESSION["wordList"];
     }
 ?>

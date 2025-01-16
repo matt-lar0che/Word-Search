@@ -3,16 +3,27 @@
     $TPL = [];
     if ($_SERVER["REQUEST_METHOD"] === "GET"){
         session_start();
-        if (!isset($_SESSION["board"])){
-            $wordList = loadWords("words.txt");
-            $words = getRandomWordList($wordList, 10);
-            $board = generateBoard($words, 20);
-            $_SESSION["board"] = $board;
-            echo json_encode($board);
+        $action = filter_input(INPUT_GET, "action", FILTER_SANITIZE_SPECIAL_CHARS);
+        if ($action === null){
+            echo "ERROR: action is not set";
         }
-        else{
-            echo json_encode($_SESSION["board"]);
+        if ($action === "board"){
+            if (!isset($_SESSION["board"])){
+                $wordList = loadWords("words.txt");
+                $words = getRandomWordList($wordList, 10);
+                $board = generateBoard($words, 20);
+                $_SESSION["board"] = $board;
+                echo json_encode($board);
+            }
+            else{
+                echo json_encode($_SESSION["board"]);
+            }
         }
+        else if ($action === "wordList"){
+            $list = fetchWordList();
+            echo json_encode($list);
+        }
+        
     }
     else if ($_SERVER["REQUEST_METHOD"] === "POST"){
         session_start();
@@ -34,6 +45,11 @@
             exit();
         }
         $matchingCoords = validateMatchingCoords($result);
+        if ($matchingCoords === false){
+            //TODO: Eventually change this to set an error message back to the client
+            echo "ERROR: Too many false guesses inserted";
+            exit(0);
+        }
         $matchingWordCoords = validateMatchingWordsCoords($matchingCoords);
         echo json_encode($matchingWordCoords);
 
