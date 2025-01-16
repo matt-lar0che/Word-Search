@@ -505,5 +505,32 @@
     }
 
     function validateMatchingWordsCoords($givenCoords){
+        //givenCoords is an array of points of form "x,y".
+        $returnArr = [];
+        foreach($_SESSION["words"] as $word){
+            foreach($word as $coordPair){
+                $coordFoundInGiven = false;
+                for ($i = 0; $i < count($givenCoords); $i++){
+                    if ($coordPair === $givenCoords[$i]){
+                        $coordFoundInGiven = true;
+                        break;
+                    }
+                }
+                if (!$coordFoundInGiven){
+                    //if the coord of this word was not in the guessed coords, go to the next word.
+                    break;
+                }
+            }
+            if ($coordFoundInGiven){
+                //if we loop through all points, and they end up existing, the word has been found
+                //TODO: Maybe modify session here and unset the word since it has been found? Or return
+                //words that have been found for another method to take delete them, and take care of 
+                //the coords.
+                foreach($word as $coordPair){
+                    $returnArr[] = $coordPair;
+                }
+            }
+        }
+        return $returnArr;
     }
 ?>
