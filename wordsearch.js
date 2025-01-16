@@ -70,8 +70,10 @@ document.getElementById("checkWord").addEventListener("click", async () => {
     coordinates.push(nodes[i].getAttribute("id"));
   }
   let jsonCoords = JSON.stringify(coordinates);
+  console.log(jsonCoords);
+
   try {
-    let data = "coords=" + jsonCoords;
+    let data = 'coords={"array": ' + jsonCoords + '}';
     const response = await fetch("controller.php",{
       method: 'POST',
       headers: {

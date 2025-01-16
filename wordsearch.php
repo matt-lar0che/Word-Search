@@ -80,6 +80,7 @@
      */  
     function generateBoard($wordList, $size){
         global $TPL;
+        $TPL["words"] = [];
         if ($wordList === null || $size === null){
             echo "ERROR: Parameters not set properly";
             return null;
@@ -136,7 +137,7 @@
                             $wordCoords[] = "$randX,$randY";
                             $randY++;
                         }
-                        $TPL["words"][$word] = $wordCoords;
+                        $_SESSION["words"][$word] = $wordCoords;
                     }
                 }
             }
@@ -173,7 +174,7 @@
                             $wordCoords[] = "$randX,$randY";
                             $randX++;
                         }
-                        $TPL["words"][$word] = $wordCoords;
+                        $_SESSION["words"][$word] = $wordCoords;
                     }
                 }
             }
@@ -210,7 +211,7 @@
                             $wordCoords[] = "$randX,$randY";
                             $randY--;
                         }
-                        $TPL["words"][$word] = $wordCoords;
+                        $_SESSION["words"][$word] = $wordCoords;
                     }
                 }
             }
@@ -247,7 +248,7 @@
                             $wordCoords[] = "$randX,$randY";
                             $randX--;
                         }
-                        $TPL["words"][$word] = $wordCoords;
+                        $_SESSION["words"][$word] = $wordCoords;
                     }
                 }
             }
@@ -288,7 +289,7 @@
                             $randY++;
                             $randX++;
                         }
-                        $TPL["words"][$word] = $wordCoords;
+                        $_SESSION["words"][$word] = $wordCoords;
                     }
                 }
             }
@@ -329,7 +330,7 @@
                             $randY++;
                             $randX--;
                         }
-                        $TPL["words"][$word] = $wordCoords;
+                        $_SESSION["words"][$word] = $wordCoords;
                     }
                 }
             }
@@ -370,7 +371,7 @@
                             $randY--;
                             $randX--;
                         }
-                        $TPL["words"][$word] = $wordCoords;
+                        $_SESSION["words"][$word] = $wordCoords;
                     }
                 }
             }
@@ -411,7 +412,7 @@
                             $randY++;
                             $randX--;
                         }
-                        $TPL["words"][$word] = $wordCoords;
+                        $_SESSION["words"][$word] = $wordCoords;
                     }
                 }
             }
@@ -452,7 +453,7 @@
                             $randY--;
                             $randX++;
                         }
-                        $TPL["words"][$word] = $wordCoords;
+                        $_SESSION["words"][$word] = $wordCoords;
                     }
                 }
             }
@@ -475,12 +476,28 @@
         foreach($coords as $coord){
             $pair = explode(",",$coord);
             $x = filter_var($pair[0],FILTER_VALIDATE_INT);
-            $y = filter_var($pair[0],FILTER_VALIDATE_INT);
+            $y = filter_var($pair[1],FILTER_VALIDATE_INT);
             if ($x === false|| $y === false){
                 return false;
             }
-            $pairs[] = array($x,$y);
+            $pairs[] = $coord;
         }
         return $pairs;
+    }
+
+
+    function validateMatchingCoords($givenCoords){
+        global $TPL;
+        $returnArr = [];
+        foreach($_SESSION["words"] as $word){
+            foreach ($word as $coords){
+                for($i = 0; $i < count($givenCoords); $i++){
+                    if ($coords === $givenCoords[$i]){
+                        $returnArr[] = $givenCoords[$i];
+                    }
+                }
+            }
+        }
+        return $returnArr;
     }
 ?>
