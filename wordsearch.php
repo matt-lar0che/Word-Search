@@ -491,10 +491,13 @@
         $returnArr = [];
         foreach($_SESSION["words"] as $word){
             foreach ($word as $coords){
-                for($i = 0; $i < count($givenCoords); $i++){
+                $len = count($givenCoords);
+                for($i = 0; $i < $len; $i++){
                     if ($coords === $givenCoords[$i]){
                         $returnArr[] = $givenCoords[$i];
+                        array_splice($givenCoords, $i, 1); //removes from array since we found this point, avoids collision with other words later.
                     }
+                    $len--;
                 }
             }
         }
