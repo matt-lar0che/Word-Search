@@ -21,14 +21,19 @@ async function getData() {
       }
   
       const json = await response.json();
-      console.log(json);
+      let wordDiv = document.getElementById("wordList");
+      wordDiv.innerHTML = "";
       json.forEach(element => {
         let node = document.createElement("p");
         node.innerHTML = element.word;
         if (element.found === true){
           node.style.textDecoration = "line-through";
+          for (let i = 0; i < element.coords.length; i++){
+            let cell = document.getElementById(element.coords[i]);
+            cell.setAttribute("class","letter-found");
+          }
         }
-        document.getElementById("wordList").appendChild(node);
+        wordDiv.appendChild(node);
       });
     } catch (error) {
       console.error(error.message);
@@ -91,7 +96,6 @@ document.getElementById("checkWord").addEventListener("click", async () => {
     coordinates.push(nodes[i].getAttribute("id"));
   }
   let jsonCoords = JSON.stringify(coordinates);
-  console.log(jsonCoords);
 
   try {
     let data = 'coords={"array": ' + jsonCoords + '}';
@@ -106,9 +110,33 @@ document.getElementById("checkWord").addEventListener("click", async () => {
       throw new Error(`Response status: ${response.status}`);
     }
 
-    const json = await response.json();
-    document.getElementById("response").innerHTML = JSON.stringify(json);
+    const json = await response.text();
   } catch (error) {
     console.error(error.message);
   }
+  
+  try {
+    const response = await fetch("controller.php?action=wordList");
+    if (!response.ok) {
+      throw new Error(`Response status: ${response.status}`);
+    }
+
+    const json = await response.json();
+      let wordDiv = document.getElementById("wordList");
+      wordDiv.innerHTML = "";
+      json.forEach(element => {
+        let node = document.createElement("p");
+        node.innerHTML = element.word;
+        if (element.found === true){
+          node.style.textDecoration = "line-through";
+          for (let i = 0; i < element.coords.length; i++){
+            let cell = document.getElementById(element.coords[i]);
+            cell.setAttribute("class","letter-found");
+          }
+        }
+        wordDiv.appendChild(node);
+      });
+    } catch (error) {
+      console.error(error.message);
+    }
 });

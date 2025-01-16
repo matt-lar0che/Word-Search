@@ -50,8 +50,7 @@
             echo "ERROR: Too many false guesses inserted";
             exit(0);
         }
-        $matchingWordCoords = validateMatchingWordsCoords($matchingCoords);
-        echo json_encode($matchingWordCoords);
-
+        validateMatchingWordsCoords($matchingCoords);
+        echo "true";
     }
 ?>
