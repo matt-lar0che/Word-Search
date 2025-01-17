@@ -58,9 +58,6 @@ function createBoard(board){
                 if (event.target.getAttribute("class") === "letter"){
                   node.setAttribute("class","letter-clicked");
                 }
-                else if (event.target.getAttribute("class") === "letter-clicked"){
-                  node.setAttribute("class","letter");
-                }
               }
             });
             node.addEventListener("mousedown", (event) => {
@@ -139,4 +136,11 @@ document.getElementById("checkWord").addEventListener("click", async () => {
     } catch (error) {
       console.error(error.message);
     }
+    nodes = document.querySelectorAll(".letter-clicked");
+    if (nodes !== null){
+      nodes.forEach(element => {
+        element.setAttribute("class","letter");
+      });
+    }
+    
 });

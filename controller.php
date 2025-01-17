@@ -10,7 +10,7 @@
         if ($action === "board"){
             if (!isset($_SESSION["board"])){
                 $wordList = loadWords("words.txt");
-                $words = getRandomWordList($wordList, 10);
+                $words = getRandomWordList($wordList, 15);
                 $board = generateBoard($words, 20);
                 $_SESSION["board"] = $board;
                 echo json_encode($board);
